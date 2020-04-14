@@ -8,21 +8,17 @@ val rules = ArrayList<Rule>()
 
 fun main() {
 	val A = Fact('A')
-	val B = Fact('B')
+	val B = Fact('B').apply { setToTrue() }
 	val C = Fact('C')
 	val D = Fact('D')
-	val G = Fact('G').apply { setToTrue() }
+	val G = Fact('G')
 
-	queriedFacts += D
+	queriedFacts += C
 
 	val rule1 = IMPLY(
-		OR(OR(A, B), C),
-		D)
-	val rule2 = IMPLY(
-		G, C
+		XOR(A, B), C
 	)
 	rules += rule1
-	rules += rule2
 
 	queriedFacts.forEach { fact -> defineFact(fact) }
 
