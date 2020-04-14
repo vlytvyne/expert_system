@@ -13,8 +13,9 @@ class AND(private val firstCondition: Condition,
 		memberFacts.forEach { it.setToTrue() }
 	}
 
+	//True => !(A + B)
 	override fun setToFalse() {
-		memberFacts.forEach { it.setToFalse() }
+		throw UnsupportedOperation("Can't set AND to FALSE")
 	}
 
 	override fun toString() = "$firstCondition + $secondCondition"

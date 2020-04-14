@@ -10,3 +10,5 @@ abstract class Condition {
 
 	abstract fun setToFalse()
 }
+
+class UnsupportedOperation(msg: String = "no message"): Exception(msg)

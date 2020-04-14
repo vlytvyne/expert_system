@@ -12,9 +12,8 @@ class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent, con
 
 	override fun execute() {
 		try {
-			when(antecedent.isTrue) {
-				true -> consequence.setToTrue()
-				false -> consequence.setToFalse()
+			if (antecedent.isTrue) {
+				consequence.setToTrue()
 			}
 		} catch (e: UndefinedFactException) {
 			defineFact(e.fact)
