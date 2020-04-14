@@ -7,5 +7,5 @@ abstract class Rule(protected val antecedent: Condition, protected val consequen
 
 	abstract val dependentFacts: List<Fact>
 
-	abstract fun execute()
+	abstract fun determineFact(fact: Fact)
 }
