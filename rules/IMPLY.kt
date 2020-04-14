@@ -2,6 +2,8 @@ package rules
 
 import conditions.Condition
 import conditions.Fact
+import conditions.UndefinedFactException
+import defineFact
 
 class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent, consequence) {
 
@@ -9,8 +11,14 @@ class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent, con
 		get() =  consequence.memberFacts
 
 	override fun execute() {
-		if (antecedent.isTrue) {
-			consequence.setToTrue()
+		try {
+			when(antecedent.isTrue) {
+				true -> consequence.setToTrue()
+				false -> consequence.setToFalse()
+			}
+		} catch (e: UndefinedFactException) {
+			defineFact(e.fact)
+			execute()
 		}
 	}
 

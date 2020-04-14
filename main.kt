@@ -15,15 +15,12 @@ fun main() {
 	facts['D'] = Fact('D')
 	facts['G'] = Fact('G')
 
-	queriedFacts += facts['C']!!
-	queriedFacts += facts['D']!!
+	queriedFacts += facts['B']!!
 
-	val rule1 = IMPLY(AND(AND(facts['A']!!, facts['G']!!), facts['C']!!), facts['D']!!)
-	val rule2 = IMPLY(facts['B']!!, facts['C']!!)
+	val rule1 = IMPLY(facts['A']!!, facts['B']!!)
 	rules += rule1
-	rules += rule2
 
-	queriedFacts.forEach { fact -> if (!fact.isDefined) defineFact(fact) }
+	queriedFacts.forEach { fact -> defineFact(fact) }
 
 	queriedFacts.forEach(::println)
 }
@@ -31,22 +28,11 @@ fun main() {
 fun defineFact(fact: Fact) {
 	val rulesWithFactInConsequence = rules.filter { rule -> rule.dependentFacts.contains(fact) }
 
-	rulesWithFactInConsequence.forEach { if (!fact.isDefined) executeRuleAndDefineAllNeededFacts(it) }
+	rulesWithFactInConsequence.forEach {
+		println(it)
+		it.execute()
+	}
 	if (!fact.isDefined) {
 		fact.setToFalse()
-	}
-
-
-}
-
-fun executeRuleAndDefineAllNeededFacts(rule: Rule) {
-	while (true) {
-		try {
-			println(rule)
-			rule.execute()
-			break
-		} catch (e: UndefinedFactException) {
-			defineFact(e.fact)
-		}
 	}
 }
