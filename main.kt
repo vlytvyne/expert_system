@@ -1,7 +1,4 @@
-import conditions.AND
-import conditions.Fact
-import conditions.NOT
-import conditions.UndefinedFactException
+import conditions.*
 import rules.IMPLY
 import rules.Rule
 
@@ -10,18 +7,22 @@ val queriedFacts = ArrayList<Fact>()
 val rules = ArrayList<Rule>()
 
 fun main() {
-	facts['A'] = Fact('A').apply { setToTrue() }
-	facts['B'] = Fact('B')
-	facts['C'] = Fact('C')
-	facts['D'] = Fact('D')
+	val A = Fact('A')
+	val B = Fact('B')
+	val C = Fact('C')
+	val D = Fact('D')
+	val G = Fact('G').apply { setToTrue() }
 
-	queriedFacts += facts['C']!!
-	queriedFacts += facts['D']!!
+	queriedFacts += D
 
 	val rule1 = IMPLY(
-		AND(facts['A']!!, NOT(facts['B']!!)),
-		NOT(AND(facts['C']!!, facts['D']!!)))
+		OR(OR(A, B), C),
+		D)
+	val rule2 = IMPLY(
+		G, C
+	)
 	rules += rule1
+	rules += rule2
 
 	queriedFacts.forEach { fact -> defineFact(fact) }
 
