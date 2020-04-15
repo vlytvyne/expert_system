@@ -1,6 +1,5 @@
 import conditions.*
 import rules.EQUAL
-import rules.IMPLY
 import rules.Rule
 
 val queriedFacts = ArrayList<Fact>()
@@ -8,16 +7,21 @@ val rules = ArrayList<Rule>()
 
 //https://en.wikipedia.org/wiki/Backward_chaining
 fun main() {
-	val A = Fact('A').apply { setToFalse() }
+	val A = Fact('A').apply { setToTrue() }
 	val B = Fact('B')
 	val C = Fact('C')
 	val D = Fact('D').apply { setToTrue() }
 	val G = Fact('G')
+	val H = Fact('H')
+	val E = Fact('E')
+	val F = Fact('F')
 
-	queriedFacts += B
+	queriedFacts += C
 
-	val rule1 = EQUAL(A, B)
+	val rule1 = C equal B
+	val rule2 = D imply !B
 	rules += rule1
+	rules += rule2
 
 	queriedFacts.forEach { fact -> defineFact(fact) }
 

@@ -7,9 +7,9 @@ class EQUAL(antecedent: Condition, consequence: Condition): Rule(antecedent, con
 
 	//EQUAL: A <=> B
 	//IMPLY: A => B
-	private val imply = IMPLY(antecedent, consequence)
+	private val imply = HARD_IMPLY(antecedent, consequence)
 	//IMPLY: B => A
-	private val reverseImply = IMPLY(consequence, antecedent)
+	private val reverseImply = HARD_IMPLY(consequence, antecedent)
 
 	//to hide from rules pool to avoid infinite loop like A => B  >>>  B => A  >>>  A => B ...
 	private var hideRule = false

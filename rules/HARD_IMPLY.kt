@@ -5,17 +5,16 @@ import conditions.Fact
 import conditions.UndefinedFactException
 import defineFact
 
-//http://www.linuxcookbook.ru/books/informatika1/ch_07_sheets/01_logic/03_implies/index.html
-open class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent, consequence) {
-
-	override val dependentFacts: List<Fact>
-		get() =  consequence.memberFacts
+//hard imply will set consequence to false if antecedent is false
+class HARD_IMPLY(antecedent: Condition, consequence: Condition): IMPLY(antecedent, consequence) {
 
 	override fun determineFact(fact: Fact) {
 		println(this)
 		try {
 			if (antecedent.isTrue) {
 				consequence.setToTrue()
+			} else {
+				consequence.setToFalse()
 			}
 		} catch (e: UndefinedFactException) {
 			defineFact(e.fact)
@@ -23,6 +22,5 @@ open class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent
 		}
 	}
 
-	override fun toString() = "$antecedent => $consequence"
-
 }
+

@@ -1,6 +1,6 @@
-A + C <=> B
-A => C
+A | B + C => E
+(F | G) + H => E
 
-=A
+=GH
 
-?B
+?E
