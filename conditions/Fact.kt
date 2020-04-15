@@ -32,7 +32,7 @@ class Fact(val name: Char): Condition() {
 		factIsTrue = false
 	}
 
-	override fun toString() = "Fact: $name | isDefined: $isDefined | isTrue: $factIsTrue"
+	override fun toString() = name.toString()
 }
 
 class UndefinedFactException(val fact: Fact, msg: String = "no message"): Exception(msg)

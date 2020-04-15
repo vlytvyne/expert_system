@@ -17,6 +17,6 @@ class XOR(private val firstCondition: Condition,
 		throw UnsupportedOperation("Can't set XOR to FALSE")
 	}
 
-	override fun toString() = "$firstCondition | $secondCondition"
+	override fun toString() = "($firstCondition | $secondCondition)"
 
 }

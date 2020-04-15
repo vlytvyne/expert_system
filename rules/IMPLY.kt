@@ -12,7 +12,6 @@ open class IMPLY(antecedent: Condition, consequence: Condition): Rule(antecedent
 		get() =  consequence.memberFacts
 
 	override fun determineFact(fact: Fact) {
-		println(this)
 		try {
 			if (antecedent.isTrue) {
 				consequence.setToTrue()

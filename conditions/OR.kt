@@ -18,6 +18,6 @@ class OR(private val firstCondition: Condition,
 		memberFacts.forEach { it.setToFalse() }
 	}
 
-	override fun toString() = "$firstCondition | $secondCondition"
+	override fun toString() = "($firstCondition | $secondCondition)"
 
 }

@@ -18,6 +18,6 @@ class AND(private val firstCondition: Condition,
 		throw UnsupportedOperation("Can't set AND to FALSE")
 	}
 
-	override fun toString() = "$firstCondition + $secondCondition"
+	override fun toString() = "($firstCondition + $secondCondition)"
 
 }
