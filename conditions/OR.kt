@@ -15,7 +15,8 @@ class OR(private val firstCondition: Condition,
 
 	//True => !(A | B)
 	override fun setToFalse() {
-		memberFacts.forEach { it.setToFalse() }
+		firstCondition.setToFalse()
+		secondCondition.setToFalse()
 	}
 
 	override fun toString() = "($firstCondition | $secondCondition)"

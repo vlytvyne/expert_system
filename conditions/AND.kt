@@ -10,7 +10,8 @@ class AND(private val firstCondition: Condition,
 		get() = firstCondition.memberFacts + secondCondition.memberFacts
 
 	override fun setToTrue() {
-		memberFacts.forEach { it.setToTrue() }
+		firstCondition.setToTrue()
+		secondCondition.setToTrue()
 	}
 
 	//True => !(A + B)

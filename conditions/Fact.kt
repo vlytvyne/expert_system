@@ -33,6 +33,10 @@ class Fact private constructor(val name: Char): Condition() {
 		factIsTrue = false
 	}
 
+	fun printResultToUser() {
+		println("$name is $factIsTrue")
+	}
+
 	override fun toString() = "Fact $name | isDefined: $isDefined | isTrue: $factIsTrue"
 
 	companion object {
@@ -53,5 +57,5 @@ class Fact private constructor(val name: Char): Condition() {
 }
 
 class UndefinedFactException(val fact: Fact, msg: String = "Undefined fact ${fact.name}"): Exception(msg)
-class AmbiguousFactException(val fact: Fact, msg: String = "Ambiguous fact ${fact.name}"): Exception(msg)
+class AmbiguousFactException(val fact: Fact, msg: String = "Ambiguous statement of fact ${fact.name}"): Exception(msg)
 class CharCantBeFactException(val char: Char, msg: String = "Char $char can't be a fact, only uppercase letter allowed"): Exception(msg)

@@ -7,9 +7,9 @@ class EQUAL(antecedent: Condition, consequence: Condition): Rule(antecedent, con
 
 	//EQUAL: A <=> B
 	//IMPLY: A => B
-	private val imply = HARD_IMPLY(antecedent, consequence)
+	private val imply = IMPLY(antecedent, consequence)
 	//IMPLY: B => A
-	private val reverseImply = HARD_IMPLY(consequence, antecedent)
+	private val reverseImply = IMPLY(consequence, antecedent)
 
 	//to hide from rules pool to avoid infinite loop like A => B  >>>  B => A  >>>  A => B ...
 	private var hideRule = false
@@ -18,6 +18,9 @@ class EQUAL(antecedent: Condition, consequence: Condition): Rule(antecedent, con
 		get() = if (!hideRule) antecedent.memberFacts + consequence.memberFacts else listOf()
 
 	override fun determineFact(fact: Fact) {
+		if (fact.isDefined) {
+			return
+		}
 		hideRule = true
 		if (antecedent.memberFacts.contains(fact)) {
 			reverseImply.determineFact(fact)

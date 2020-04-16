@@ -1,8 +1,10 @@
 import conditions.*
 import conditions.Fact.Companion.getFact
 import rules.Rule
+import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -10,18 +12,26 @@ val queriedFacts = ArrayList<Fact>()
 val rules = ArrayList<Rule>()
 
 //https://en.wikipedia.org/wiki/Backward_chaining
-fun main() {
-//	queriedFacts += getFact('D')
-//	getFact('C').setToTrue()
-//
-//	val rule1 = RuleExtractor("A ^ B | C => D").extractRule()
-//	rules += rule1
-//
-//	queriedFacts.forEach { fact -> defineFact(fact) }
-//
-	readInput(FileInputStream("src/input.txt"))
+fun main(args: Array<String>) {
+	readUserInput(args)
 	solve()
 	showTheResults()
+}
+
+private fun readUserInput(args: Array<String>) {
+	if (args.size == 0) {
+		invalidExit("Please, provide file name")
+	}
+	val file = File(args[0])
+	if (file.exists() && file.canRead()) {
+		try {
+			readInput(FileInputStream(file))
+		} catch (e: Exception) {
+			invalidExit("Invalid formatting")
+		}
+	} else {
+		invalidExit("Make sure that file exists and check the permissions")
+	}
 }
 
 fun readInput(inputStream: InputStream) {
@@ -60,21 +70,22 @@ private fun eraseComment(line: String): String {
 }
 
 fun solve() {
-	queriedFacts.forEach { fact -> defineFact(fact) }
+	try {
+		queriedFacts.forEach { fact -> defineFact(fact) }
+	} catch (e: Exception) {
+		invalidExit(e.message!!)
+	}
 }
 
 fun defineFact(fact: Fact) {
-	val rulesWithDependentFact =
-		rules.filter { rule -> rule.dependentFacts.contains(fact) }
+	val rulesWithDependentFact = rules.filter { rule -> rule.dependentFacts.contains(fact) }
+	rulesWithDependentFact.forEach { it.determineFact(fact) }
 
-	rulesWithDependentFact.forEach {
-		it.determineFact(fact)
-	}
 	if (!fact.isDefined) {
 		fact.setToFalse()
 	}
 }
 
 fun showTheResults() {
-	queriedFacts.forEach(::println)
+	queriedFacts.forEach { it.printResultToUser() }
 }
