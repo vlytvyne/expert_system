@@ -1,33 +1,66 @@
 import conditions.*
+import conditions.Fact.Companion.getFact
 import rules.Rule
+import java.io.FileInputStream
+import java.io.InputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 val queriedFacts = ArrayList<Fact>()
 val rules = ArrayList<Rule>()
 
 //https://en.wikipedia.org/wiki/Backward_chaining
 fun main() {
-//	val A = Fact('A').apply { setToTrue() }
-//	val B = Fact('B')
-//	val C = Fact('C')
-//	val D = Fact('D').apply { setToTrue() }
-//	val G = Fact('G')
-//	val H = Fact('H')
-//	val E = Fact('E')
-//	val F = Fact('F')
+//	queriedFacts += getFact('D')
+//	getFact('C').setToTrue()
 //
-//	queriedFacts += C
-//
-//	val rule1 = C equal B
-//	val rule2 = D imply !B
+//	val rule1 = RuleExtractor("A ^ B | C => D").extractRule()
 //	rules += rule1
-//	rules += rule2
 //
 //	queriedFacts.forEach { fact -> defineFact(fact) }
 //
-//	queriedFacts.forEach(::println)
+	readInput(FileInputStream("src/input.txt"))
+	solve()
+	showTheResults()
+}
 
-	// i|A+BCD
-	println(RuleExtractor("(A | !B) + C => D").extractRule())
+fun readInput(inputStream: InputStream) {
+	val scanner = Scanner(inputStream)
+	while (scanner.hasNextLine()) {
+		var line = scanner.nextLine()
+		line = eraseComment(line)
+		line = line.trim()
+		when {
+			line.isBlank() -> Unit
+			isLineWithTrueFacts(line) -> extractTrueFacts(line)
+			isLineWithQueriedFacts(line) -> extractQueriedFacts(line)
+			else -> rules += RuleExtractor(line).extractRule()
+		}
+	}
+}
+
+fun isLineWithTrueFacts(line: String) = line[0] == '='
+
+fun extractTrueFacts(line: String) {
+	line.substring(1).forEach { getFact(it).setToTrue() }
+}
+
+fun isLineWithQueriedFacts(line: String) = line[0] == '?'
+
+fun extractQueriedFacts(line: String) {
+	line.substring(1).forEach { queriedFacts += getFact(it) }
+}
+
+private fun eraseComment(line: String): String {
+	if (line.contains('#')) {
+		val commentLength = line.length - line.split('#')[0].length
+		return line.dropLast(commentLength)
+	}
+	return line
+}
+
+fun solve() {
+	queriedFacts.forEach { fact -> defineFact(fact) }
 }
 
 fun defineFact(fact: Fact) {
@@ -40,4 +73,8 @@ fun defineFact(fact: Fact) {
 	if (!fact.isDefined) {
 		fact.setToFalse()
 	}
+}
+
+fun showTheResults() {
+	queriedFacts.forEach(::println)
 }

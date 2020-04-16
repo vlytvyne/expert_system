@@ -1,8 +1,10 @@
 package conditions
 
 import and
+import conditions.Fact.Companion.getFact
 import equal
 import imply
+import isFact
 import not
 import or
 import rules.EQUAL
@@ -108,7 +110,7 @@ class RuleExtractor(val ruleFormula: String) {
 		val currentChar = finalFormula[nextCharIndex]
 		nextCharIndex++
 		if (currentChar.isFact()) {
-			return Fact(currentChar)
+			return getFact(currentChar)
 		}
 		return when(currentChar) {
 			'!' -> !getNextCondition()
@@ -120,8 +122,6 @@ class RuleExtractor(val ruleFormula: String) {
 	}
 
 	private fun Char.getPrior() = if (this == OPENING_PARENTHESIS) 0 else operatorToPrior[this]!!
-
-	private fun Char.isFact() = this.isLetter() && this.isUpperCase()
 	private fun Char.isOperator() = operatorToPrior.containsKey(this)
 }
 
